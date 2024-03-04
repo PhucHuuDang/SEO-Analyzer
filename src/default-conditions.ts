@@ -24,3 +24,11 @@ export const defaultCondition: ConfigConditions = {
     improveMinPercent: 1.8,
   },
 };
+
+export const assessmentLevels = {
+  POOR: "Bài viết đạt trạng thái TỆ",
+  BASIC: "Bài viết đạt trạng thái CƠ BẢN, cần cải thiện",
+  GOOD: "Bài viết đạt trạng thái TỐT",
+  VERY_GOOD: "Bài viết đạt trạng thái RẤT TỐT",
+  EXCELLENT: "Bài viết đạt trạng thái XUẤT SẮC",
+};

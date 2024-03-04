@@ -2,7 +2,7 @@ import { seoLogsValidate } from "./criteria-results";
 import { defaultCondition } from "./default-conditions";
 import { deepMerge } from "./merge-objects";
 import { htmlToText } from "./transform";
-import { ImageProps, Node, ValidateProps } from "./types";
+import { DeepMergeProps, ImageProps, Node, ValidateProps } from "./types";
 
 export class CmsSEOChecker {
   private static totalContent: string = "";
@@ -96,7 +96,7 @@ export class CmsSEOChecker {
     return "";
   }
 
-  public static lengthChecked(data: any) {
+  private static lengthChecked(data: any) {
     let parentTotalString: string = "";
 
     // let childrenTotalString: string = ''
@@ -115,7 +115,7 @@ export class CmsSEOChecker {
     return totalWords;
   }
 
-  public static keywordDensity(keyword: string) {
+  private static keywordDensity(keyword: string) {
     if (!keyword) {
       return;
     }
@@ -144,7 +144,7 @@ export class CmsSEOChecker {
     return dataReturned;
   }
 
-  public static titleTransformed(title: string, keyword: string) {
+  private static titleTransformed(title: string, keyword: string) {
     const getTitle = this.removeDiacritics(title);
     const existKeywordInTile = getTitle.includes(keyword);
 
@@ -197,7 +197,7 @@ export class CmsSEOChecker {
       config = defaultCondition;
     }
 
-    const mergeObjParams = deepMerge(data, config);
+    const mergeObjParams: DeepMergeProps = deepMerge(data, config);
 
     if (!mergeObjParams) {
       return null;
@@ -213,6 +213,7 @@ export class CmsSEOChecker {
     } = mergeObjParams;
 
     const dataReturned = this.loopData(htmlToJsonData);
+
     const normalizedKeyword = this.removeDiacritics(lowercasedKeywords ?? "");
     const titleResult = this.titleTransformed(
       lowercasedTitle,
@@ -253,3 +254,5 @@ export class CmsSEOChecker {
     return resultValidated;
   }
 }
+
+// module.exports = CmsSEOChecker;

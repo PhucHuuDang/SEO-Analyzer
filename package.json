@@ -1,16 +1,30 @@
 {
   "name": "seo-analyzer",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "seo-analyzer is a tool to analyze the SEO of a website",
+  "main": "/dist/index.js",
+  "module": "/dist/index.mjs",
+  "types": "/dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PhucHuuDang/seo-analyzer"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "seo",
+    "analyzer",
+    "website",
+    "check length text",
+    "meta",
+    "density keywords"
+  ],
+  "author": "Harry Dang",
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
