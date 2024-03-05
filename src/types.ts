@@ -12,6 +12,11 @@ export type Node = {
   nodeValue?: string;
 };
 
+export type OutRange = {
+  outOfMinLength?: number;
+  outOfMaxLength?: number;
+};
+
 export type DeepMergeProps = {
   lowercasedTitle: string;
   watchValueSlug: string;
@@ -37,11 +42,15 @@ export type TitleProps = {
   minLength: number;
   averageLength: number;
   maxLength: number;
+
+  outRage?: OutRange
 };
 
 export type ContentProps = {
   minLength: number;
   maxLength: number;
+
+  outRage?: OutRange
 };
 
 export type MetaProps = {

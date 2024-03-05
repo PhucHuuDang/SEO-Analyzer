@@ -10,7 +10,8 @@
     "url": "https://github.com/PhucHuuDang/seo-analyzer"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "jest"
   },
   "keywords": [
     "seo",
@@ -23,7 +24,10 @@
   "author": "Harry Dang",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/lodash-es": "^4.17.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },

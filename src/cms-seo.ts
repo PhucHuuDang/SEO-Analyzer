@@ -1,9 +1,20 @@
 import { seoLogsValidate } from "./criteria-results";
-import { defaultCondition } from "./default-conditions";
+import {
+  dynamicConditions,
+  originalCondition,
+  setDefaultCondition,
+} from "./default-conditions";
 import { deepMerge } from "./merge-objects";
 import { htmlToText } from "./transform";
-import { DeepMergeProps, ImageProps, Node, ValidateProps } from "./types";
+import {
+  ConfigConditions,
+  DeepMergeProps,
+  ImageProps,
+  Node,
+  ValidateProps,
+} from "./types";
 
+// export let storedConfig: ConfigConditions = dynamicConditions;
 export class CmsSEOChecker {
   private static totalContent: string = "";
   static altText: any[] = [];
@@ -193,11 +204,14 @@ export class CmsSEOChecker {
   }
 
   public static analysis(data: any, config?: any) {
-    if (!config) {
-      config = defaultCondition;
+    if (config) {
+      // dynamicConditions = config;
+      setDefaultCondition(config);
+    } else {
+      setDefaultCondition(originalCondition);
     }
 
-    const mergeObjParams: DeepMergeProps = deepMerge(data, config);
+    const mergeObjParams: DeepMergeProps = deepMerge(data, dynamicConditions);
 
     if (!mergeObjParams) {
       return null;
@@ -254,5 +268,7 @@ export class CmsSEOChecker {
     return resultValidated;
   }
 }
+
+// export { storedConfig };
 
 // module.exports = CmsSEOChecker;

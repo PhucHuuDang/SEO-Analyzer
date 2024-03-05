@@ -36,9 +36,37 @@ function generateAssessment(
   };
 }
 
-const POOR_SCORE = 3;
-const IMPROVE_SCORE = 6;
-const GOOD_SCORE = 10;
+export const POOR_SCORE = 3;
+export const IMPROVE_SCORE = 6;
+export const GOOD_SCORE = 10;
+
+export function generateExpectedResult(
+  assessmentKey: string,
+  assessmentLabel: string,
+  description: string,
+  extra: Record<string, any>,
+  score: number,
+  scoreLabel: string,
+  suggestion?: string[]
+
+  // length: number,
+  // content: ContentProps,
+  // description: string
+) {
+  // const assessmentKeyObj = contentLength.assessments;
+  // const assessmentLabel: string = assessmentKeyObj.assessmentLabel;
+  // const suggestion: string[] = [];
+
+  return {
+    assessmentKey,
+    assessmentLabel,
+    description,
+    extra,
+    score,
+    scoreLabel,
+    suggestion,
+  };
+}
 
 export const keywordValidation = (keywords: boolean) => {
   const assessmentKey: string = keywordLogs.assessments.assessmentKey;
@@ -101,7 +129,7 @@ export function contentLengthValidate(length: number, content: ContentProps) {
       scoreLabel = assessmentKeyObj.scoreLabel.poor(assessmentLabel) as string;
       suggestion = [contentLength.suggestion];
       break;
-    case length >= 300 && length <= 1200:
+    case length >= content.minLength && length <= content.maxLength:
       description = contentLength.goodStatus;
       score = GOOD_SCORE;
       scoreLabel = assessmentKeyObj.scoreLabel.good(assessmentLabel) as string;

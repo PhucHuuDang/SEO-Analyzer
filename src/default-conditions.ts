@@ -1,14 +1,20 @@
 import { ConfigConditions } from "./types";
 
-export const defaultCondition: ConfigConditions = {
+export const originalCondition: ConfigConditions = {
   title: {
     minLength: 50,
     averageLength: 60,
     maxLength: 70,
   },
+
   content: {
     minLength: 300,
     maxLength: 1200,
+
+    outRage: {
+      outOfMinLength: 299,
+      outOfMaxLength: 1201,
+    },
   },
   meta: {
     minLength: 120,
@@ -24,6 +30,11 @@ export const defaultCondition: ConfigConditions = {
     improveMinPercent: 1.8,
   },
 };
+export let dynamicConditions: ConfigConditions = originalCondition;
+
+export function setDefaultCondition(newConditions: ConfigConditions) {
+  return newConditions && (dynamicConditions = newConditions);
+}
 
 export const assessmentLevels = {
   POOR: "Bài viết đạt trạng thái TỆ",
