@@ -79,7 +79,11 @@ export const keywordValidation = (keywords: boolean) => {
     isExistKeywordInTitle: keywords ?? "Không có từ khoá chính",
   };
 
-  if (keywords) {
+  if (keywords === undefined || keywords === null) {
+    throw new Error("keywords is not defined");
+  } else if (typeof keywords !== "boolean") {
+    throw new Error("keywords is not a boolean type");
+  } else if (keywords) {
     description = keywordLogs.goodStatus;
     score = GOOD_SCORE;
     scoreLabel = titleLogs.assessments.scoreLabel.good(
@@ -116,27 +120,38 @@ export function contentLengthValidate(length: number, content: ContentProps) {
     titleLength: length,
   };
 
-  switch (true) {
-    case length < content.minLength:
-      description = contentLength.poorShortContent;
-      score = POOR_SCORE;
-      scoreLabel = assessmentKeyObj.scoreLabel.poor(assessmentLabel) as string;
-      suggestion = [contentLength.suggestion];
-      break;
-    case length > content.maxLength:
-      description = contentLength.poorLongContent;
-      score = POOR_SCORE;
-      scoreLabel = assessmentKeyObj.scoreLabel.poor(assessmentLabel) as string;
-      suggestion = [contentLength.suggestion];
-      break;
-    case length >= content.minLength && length <= content.maxLength:
-      description = contentLength.goodStatus;
-      score = GOOD_SCORE;
-      scoreLabel = assessmentKeyObj.scoreLabel.good(assessmentLabel) as string;
-      break;
-    default:
-      // Default case
-      break;
+  const lengthObjConditions = Object.keys(content).length;
+
+  if (!length || !content) {
+    throw new Error("missing one of two params");
+  } else if (typeof length !== "number") {
+    throw new Error("length is not a number type");
+  } else if (length < 0) {
+    throw new Error("length can't be negative");
+  } else if (
+    typeof content !== "object" &&
+    !Array.isArray(content) &&
+    content !== null
+  ) {
+    throw new Error("content is not an object");
+  } else if (content.minLength < 0 || content.maxLength < 0) {
+    throw new Error("conditions are set can not be negative");
+  } else if (lengthObjConditions !== 2) {
+    throw new Error("this function need 2 conditions");
+  } else if (length < content.minLength) {
+    description = contentLength.poorShortContent;
+    score = POOR_SCORE;
+    scoreLabel = assessmentKeyObj.scoreLabel.poor(assessmentLabel) as string;
+    suggestion = [contentLength.suggestion];
+  } else if (length > content.maxLength) {
+    description = contentLength.poorLongContent;
+    score = POOR_SCORE;
+    scoreLabel = assessmentKeyObj.scoreLabel.poor(assessmentLabel) as string;
+    suggestion = [contentLength.suggestion];
+  } else if (length >= content.minLength && length <= content.maxLength) {
+    description = contentLength.goodStatus;
+    score = GOOD_SCORE;
+    scoreLabel = assessmentKeyObj.scoreLabel.good(assessmentLabel) as string;
   }
 
   return generateAssessment(
@@ -155,14 +170,14 @@ export const titleValidate = (
   // existKeywordsInTitle: boolean,
   // checkPositionKeyword: string | boolean,
   titleValueReturned: TitleValidateProps,
-  title: TitleProps
+  titleConditions: TitleProps
 ) => {
   const assessmentLabelObj = titleLogs.assessments.assessmentLabel;
   const scoreLabelObj = titleLogs.scoreLabel;
   const { length, existKeywordsInTitle, checkPositionKeyword } =
     titleValueReturned;
 
-  const { minLength, averageLength, maxLength } = title;
+  const { minLength, averageLength, maxLength } = titleConditions;
 
   const assessmentKey: string = titleLogs.assessments.assessmentKey;
   let assessmentLabel: string = assessmentLabelObj.titleLength;
@@ -176,37 +191,66 @@ export const titleValidate = (
     checkPositionKeyword: checkPositionKeyword,
   };
 
-  switch (true) {
-    case length < minLength || length > maxLength:
-      description = titleLogs.poorLengthTitle;
-      score = POOR_SCORE;
-      scoreLabel = scoreLabelObj.poor(assessmentLabelObj.titleLength);
-      suggestion = [titleLogs.suggestion.titleLength];
-      break;
-    case !existKeywordsInTitle:
-      description = titleLogs.poorExistedKeyWord;
-      assessmentLabel = assessmentLabelObj.existKeywordsInTitle;
-      score = POOR_SCORE;
-      scoreLabel = scoreLabelObj.poor(assessmentLabelObj.existKeywordsInTitle);
-      suggestion = [titleLogs.suggestion.existKeywordsInTitle];
-      break;
-    case length >= averageLength && length <= maxLength && existKeywordsInTitle:
-      description = titleLogs.goodStatus(length);
-      assessmentLabel = assessmentLabelObj.titleLength;
-      score = GOOD_SCORE;
-      scoreLabel = scoreLabelObj.good(assessmentLabelObj.titleLength);
-      break;
-    case !checkPositionKeyword:
-      description = titleLogs.improveStatus;
-      assessmentLabel = assessmentLabelObj.checkPositionKeywordInTitle;
-      score = IMPROVE_SCORE;
-      scoreLabel = scoreLabelObj.improve(
-        assessmentLabelObj?.checkPositionKeywordInTitle
-      );
-      break;
-    default:
-      // Default case
-      break;
+  if (!titleValueReturned || !titleConditions) {
+    throw new Error("missing one of two params");
+  } else if (
+    typeof titleValueReturned !== "object" &&
+    !Array.isArray(titleValueReturned)
+  ) {
+    throw new Error("the first param is not an object");
+  } else if (
+    typeof titleConditions !== "object" &&
+    !Array.isArray(titleConditions)
+  ) {
+    throw new Error("the second param is not an object");
+  } else if (minLength < 0 || averageLength < 0 || maxLength < 0) {
+    throw new Error(
+      "conditions (minLength or averageLength or maxLength) are set can't be negative"
+    );
+  } else if (
+    typeof length !== "number" ||
+    typeof existKeywordsInTitle !== "boolean" ||
+    typeof checkPositionKeyword !== "boolean"
+  ) {
+    throw new Error(
+      "One or more parameters have incorrect types: length, existKeywordsInTitle, or checkPositionKeyword"
+    );
+  } else if (
+    typeof minLength !== "number" ||
+    typeof averageLength !== "number" ||
+    typeof maxLength !== "number"
+  ) {
+    throw new Error(
+      "One or more parameters have incorrect types: minLength, averageLength, or maxLength"
+    );
+  } else if (length < minLength || length > maxLength) {
+    description = titleLogs.poorLengthTitle;
+    score = POOR_SCORE;
+    scoreLabel = scoreLabelObj.poor(assessmentLabelObj.titleLength);
+    suggestion = [titleLogs.suggestion.titleLength];
+  } else if (!existKeywordsInTitle) {
+    description = titleLogs.poorExistedKeyWord;
+    assessmentLabel = assessmentLabelObj.existKeywordsInTitle;
+    score = POOR_SCORE;
+    scoreLabel = scoreLabelObj.poor(assessmentLabelObj.existKeywordsInTitle);
+    suggestion = [titleLogs.suggestion.existKeywordsInTitle];
+  } else if (
+    length >= minLength &&
+    length <= maxLength &&
+    existKeywordsInTitle &&
+    checkPositionKeyword
+  ) {
+    description = titleLogs.goodStatus(length);
+    assessmentLabel = assessmentLabelObj.titleLength;
+    score = GOOD_SCORE;
+    scoreLabel = scoreLabelObj.good(assessmentLabelObj.titleLength);
+  } else if (!checkPositionKeyword) {
+    description = titleLogs.improveStatus;
+    assessmentLabel = assessmentLabelObj.checkPositionKeywordInTitle;
+    score = IMPROVE_SCORE;
+    scoreLabel = scoreLabelObj.improve(
+      assessmentLabelObj?.checkPositionKeywordInTitle
+    );
   }
 
   return generateAssessment(
@@ -236,34 +280,46 @@ export const metaValidation = (length: number, meta: MetaProps) => {
     metaLength: length,
   };
 
-  switch (true) {
-    case length < minLength || length > maxLength:
-      description = metaLogs.poorShortLength(length);
-      score = POOR_SCORE;
-      scoreLabel = scoreLabelObj.poor(assessmentLabel);
-      suggestion = [assessmentKeyObj.suggestion as string];
-      break;
-    case length >= goodMaxLength && length <= maxLength:
-      description = metaLogs.improveOutRangeLength(length);
-      score = IMPROVE_SCORE;
-      scoreLabel = scoreLabelObj.improve(assessmentLabel);
-      suggestion = [assessmentKeyObj.suggestion as string];
-      break;
-    case length >= improveLength && length <= goodMinLength:
-      description = metaLogs.improveInRangeLength(length);
-      score = IMPROVE_SCORE;
-      scoreLabel = scoreLabelObj.improve(assessmentLabel);
-      suggestion = [assessmentKeyObj.suggestion as string];
-      break;
-    case length >= goodMinLength && length <= goodMaxLength:
-      description = metaLogs.goodLength(length);
-      score = GOOD_SCORE;
-      scoreLabel = scoreLabelObj.good(assessmentLabel);
-      suggestion = [];
-      break;
-    default:
-      // Default case
-      break;
+  const metaLimitsLength = Object.keys(meta).length;
+
+  // exception case
+  if (!length || !meta) {
+    throw new Error("missing 1 of 2 params");
+  } else if (typeof length !== "number") {
+    throw new Error("length is not a number type");
+  } else if (metaLimitsLength !== 5) {
+    throw new Error("meta is not enough or too much");
+  } else if (typeof meta !== "object") {
+    throw new Error("meta is not an object");
+  } else if (length < 0) {
+    throw new Error("length can't be negative");
+  } else if (
+    minLength < 10 ||
+    maxLength < 10 ||
+    goodMinLength < 10 ||
+    goodMaxLength < 10
+  ) {
+    throw new Error("conditions are set can't be less than 10");
+  } else if (length <= minLength || length > maxLength) {
+    description = metaLogs.poorShortLength(length);
+    score = POOR_SCORE;
+    scoreLabel = scoreLabelObj.poor(assessmentLabel);
+    suggestion = [assessmentKeyObj.suggestion as string];
+  } else if (length >= goodMaxLength && length <= maxLength) {
+    description = metaLogs.improveOutRangeLength(length);
+    score = IMPROVE_SCORE;
+    scoreLabel = scoreLabelObj.improve(assessmentLabel);
+    suggestion = [assessmentKeyObj.suggestion as string];
+  } else if (length >= improveLength && length < goodMinLength) {
+    description = metaLogs.improveInRangeLength(length);
+    score = IMPROVE_SCORE;
+    scoreLabel = scoreLabelObj.improve(assessmentLabel);
+    suggestion = [assessmentKeyObj.suggestion as string];
+  } else if (length >= goodMinLength && length <= goodMaxLength) {
+    description = metaLogs.goodLength(length);
+    score = GOOD_SCORE;
+    scoreLabel = scoreLabelObj.good(assessmentLabel);
+    suggestion = [];
   }
 
   return generateAssessment(
@@ -288,12 +344,19 @@ export const existKeywordInMetaDescription = (value: boolean) => {
   const extra: Record<string, any> = {
     isExistKeywordInMeta: value,
   };
-  if (value) {
+
+  if (value === undefined) {
+    throw new Error("value is not defined");
+  } else if (value === null) {
+    throw new Error("value is null");
+  } else if (typeof value !== "boolean") {
+    throw new Error("value is not a boolean type");
+  } else if (value === true) {
     description = keywordExistInMeta.keywordValid;
     score = GOOD_SCORE;
     scoreLabel =
       keywordExistInMeta.assessments.scoreLabel.good(assessmentLabel);
-  } else {
+  } else if (value === false) {
     description = keywordExistInMeta.keywordInValid;
     score = IMPROVE_SCORE;
     scoreLabel = metaLogs.assessments.scoreLabel.improve(assessmentLabel);
@@ -313,10 +376,13 @@ export const existKeywordInMetaDescription = (value: boolean) => {
 
 export const densityKeywordsValidate = (
   density: number,
-  densityKeyword: DensityPercentageProps
+  densityKeywordPercentsLimited: DensityPercentageProps
 ) => {
+  var sizeParamObj = Object.keys(densityKeywordPercentsLimited).length;
+
   const assessmentObj = densityKeywordsLogs.assessments;
-  const { goodMinPercent, goodMaxPercent, improveMinPercent } = densityKeyword;
+  const { goodMinPercent, goodMaxPercent, improveMinPercent } =
+    densityKeywordPercentsLimited;
 
   const assessmentKey: string = assessmentObj.assessmentKey;
   const assessmentLabel: string = assessmentObj.assessmentLabel;
@@ -328,25 +394,42 @@ export const densityKeywordsValidate = (
     densityKeywords: density,
   };
 
-  switch (true) {
-    case density >= goodMinPercent && density <= goodMaxPercent:
-      description = densityKeywordsLogs.goodStatus(density);
-      score = GOOD_SCORE;
-      scoreLabel = assessmentObj.scoreLabel.good(assessmentLabel);
-      break;
-    case (density >= improveMinPercent && density < goodMinPercent) ||
-      density > goodMaxPercent:
-      description = densityKeywordsLogs.improveStatus(density);
-      score = IMPROVE_SCORE;
-      scoreLabel = assessmentObj.scoreLabel.improve(assessmentLabel);
-      suggestion = [densityKeywordsLogs.suggestion];
-      break;
-    default:
-      description = densityKeywordsLogs.poorStatus(density);
-      score = IMPROVE_SCORE;
-      scoreLabel = assessmentObj.scoreLabel.improve(assessmentLabel);
-      suggestion = [densityKeywordsLogs.suggestion];
-      break;
+  if (typeof density !== "number") {
+    throw new Error("first param is not a number");
+  } else if (typeof densityKeywordPercentsLimited !== "object") {
+    throw new Error("second param is not an object contain 3 keys percents");
+  } else if (
+    typeof densityKeywordPercentsLimited === "object" &&
+    sizeParamObj !== 3
+  ) {
+    throw new Error("densityKeywordPercentsLimited is not enough or too much");
+  } else if (!density || !densityKeywordPercentsLimited) {
+    throw new Error("missing one of two params");
+  } else if (density < 0) {
+    throw new Error("density can't be negative");
+  } else if (
+    goodMinPercent < 0 ||
+    goodMaxPercent < 0 ||
+    improveMinPercent < 0
+  ) {
+    throw new Error("conditions are set can't be negative");
+  } else if (density >= goodMinPercent && density <= goodMaxPercent) {
+    description = densityKeywordsLogs.goodStatus(density);
+    score = GOOD_SCORE;
+    scoreLabel = assessmentObj.scoreLabel.good(assessmentLabel);
+  } else if (
+    (density >= improveMinPercent && density < goodMinPercent) ||
+    density > goodMaxPercent
+  ) {
+    description = densityKeywordsLogs.improveStatus(density);
+    score = IMPROVE_SCORE;
+    scoreLabel = assessmentObj.scoreLabel.improve(assessmentLabel);
+    suggestion = [densityKeywordsLogs.suggestion];
+  } else {
+    description = densityKeywordsLogs.poorStatus(density);
+    score = IMPROVE_SCORE;
+    scoreLabel = assessmentObj.scoreLabel.improve(assessmentLabel);
+    suggestion = [densityKeywordsLogs.suggestion];
   }
 
   return generateAssessment(
@@ -360,7 +443,10 @@ export const densityKeywordsValidate = (
   );
 };
 
-export const imageValidation = (images: ImageProps[], alt: boolean) => {
+export const imageValidation = (
+  images: ImageProps[],
+  isExistKeywordInAlt: boolean
+) => {
   const assessmentKey: string = imageLogs.assessments.assessmentKey;
   const assessmentLabel: string = imageLogs.assessments.assessmentLabel;
   let score: number = 3;
@@ -369,32 +455,41 @@ export const imageValidation = (images: ImageProps[], alt: boolean) => {
   let suggestion: string[] = [];
   const extra: Record<string, any> = {};
 
-  const isExistAlt = images.every((item) => item.alt);
+  const isExistAlt = images?.every((item) => item.alt);
 
-  switch (true) {
-    case images.length !== 0 && !alt:
-      description = imageLogs.improveStatus;
-      score = IMPROVE_SCORE;
-      scoreLabel = imageLogs.assessments.scoreLabel.improve(assessmentLabel);
-      suggestion = [imageLogs.suggestion.improveStatus];
-      break;
-    case images.length !== 0 && !isExistAlt:
-      description = imageLogs.poorStatus;
-      score = POOR_SCORE;
-      scoreLabel = imageLogs.assessments.scoreLabel.poor(assessmentLabel);
-      suggestion = [imageLogs.suggestion.poorStatus];
-      break;
-    case images.length !== 0 && isExistAlt && alt:
-      description = imageLogs.goodStatus;
-      score = GOOD_SCORE;
-      scoreLabel = imageLogs.assessments.scoreLabel.good(assessmentLabel);
-      break;
-    default:
-      description = imageLogs.poorInvalidImage;
-      score = POOR_SCORE;
-      scoreLabel = imageLogs.assessments.scoreLabel.poor(assessmentLabel);
-      suggestion = [imageLogs.suggestion.poorInvalidImage];
-      break;
+  if (!images || isExistKeywordInAlt === undefined) {
+    throw new Error("missing one of two params");
+  } else if (!Array.isArray(images)) {
+    throw new Error("images is not an array");
+  } else if (
+    !images.every(
+      (item) =>
+        typeof item === "object" && !Array.isArray(item) && item !== null
+    )
+  ) {
+    throw new Error("images is not an array of objects");
+  } else if (typeof isExistKeywordInAlt !== "boolean") {
+    throw new Error("isExistKeywordInAlt is not a boolean type");
+  }
+  if (images.length !== 0 && !isExistKeywordInAlt) {
+    description = imageLogs.improveStatus;
+    score = IMPROVE_SCORE;
+    scoreLabel = imageLogs.assessments.scoreLabel.improve(assessmentLabel);
+    suggestion = [imageLogs.suggestion.improveStatus];
+  } else if (images.length !== 0 && isExistKeywordInAlt && !isExistAlt) {
+    description = imageLogs.poorStatus;
+    score = POOR_SCORE;
+    scoreLabel = imageLogs.assessments.scoreLabel.poor(assessmentLabel);
+    suggestion = [imageLogs.suggestion.poorStatus];
+  } else if (images.length !== 0 && isExistKeywordInAlt && isExistAlt) {
+    description = imageLogs.goodStatus;
+    score = GOOD_SCORE;
+    scoreLabel = imageLogs.assessments.scoreLabel.good(assessmentLabel);
+  } else if (images.length === 0 && isExistKeywordInAlt) {
+    description = imageLogs.poorInvalidImage;
+    score = POOR_SCORE;
+    scoreLabel = imageLogs.assessments.scoreLabel.poor(assessmentLabel);
+    suggestion = [imageLogs.suggestion.poorInvalidImage];
   }
 
   return generateAssessment(

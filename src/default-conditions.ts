@@ -3,18 +3,13 @@ import { ConfigConditions } from "./types";
 export const originalCondition: ConfigConditions = {
   title: {
     minLength: 50,
-    averageLength: 60,
+    averageLength: 45,
     maxLength: 70,
   },
 
   content: {
     minLength: 300,
     maxLength: 1200,
-
-    outRage: {
-      outOfMinLength: 299,
-      outOfMaxLength: 1201,
-    },
   },
   meta: {
     minLength: 120,

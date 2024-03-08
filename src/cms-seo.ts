@@ -204,14 +204,17 @@ export class CmsSEOChecker {
   }
 
   public static analysis(data: any, config?: any) {
-    if (config) {
-      // dynamicConditions = config;
-      setDefaultCondition(config);
-    } else {
-      setDefaultCondition(originalCondition);
+    // if (config) {
+    //   // dynamicConditions = config;
+    //   setDefaultCondition(config);
+    // } else {
+    //   setDefaultCondition(originalCondition);
+    // }
+    if (!config) {
+      config = originalCondition;
     }
 
-    const mergeObjParams: DeepMergeProps = deepMerge(data, dynamicConditions);
+    const mergeObjParams: DeepMergeProps = deepMerge(data, config);
 
     if (!mergeObjParams) {
       return null;

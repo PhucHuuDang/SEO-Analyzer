@@ -42,15 +42,11 @@ export type TitleProps = {
   minLength: number;
   averageLength: number;
   maxLength: number;
-
-  outRage?: OutRange
 };
 
 export type ContentProps = {
   minLength: number;
   maxLength: number;
-
-  outRage?: OutRange
 };
 
 export type MetaProps = {
@@ -112,6 +108,6 @@ interface MetaExtractedProps {
 export interface ImageProps {
   src?: string;
   alt?: string;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
 }
