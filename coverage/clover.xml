@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1709917688970" clover="3.2.0">
-  <project timestamp="1709917688970" name="All files">
+<coverage generated="1709918721436" clover="3.2.0">
+  <project timestamp="1709918721437" name="All files">
     <metrics statements="277" coveredstatements="267" conditionals="185" coveredconditionals="173" methods="22" coveredmethods="22" elements="484" coveredelements="462" complexity="0" loc="277" ncloc="277" packages="1" files="2" classes="2"/>
     <file name="criteria-validate.ts" path="/Users/danghuuphuc001/Desktop/Projects/seo-analyzer/src/criteria-validate.ts">
       <metrics statements="255" coveredstatements="245" conditionals="185" coveredconditionals="173" methods="10" coveredmethods="10"/>
