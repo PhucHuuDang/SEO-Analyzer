@@ -13,7 +13,7 @@
     "build": "tsup",
     "git": "git-cz",
     "test": "jest --coverage",
-    "semantic-release": "semantic-release --branches UPDATE/CI"
+    "semantic-release": "semantic-release --branches main"
   },
   "keywords": [
     "seo",
