@@ -1218,16 +1218,16 @@ describe("testing for function imageValidation: ", () => {
       }).toThrow();
     });
 
-    test("pass second param not type of boolean", () => {
-      expect(() => {
-        // @ts-ignore
-        imageValidation(images, "string input");
-      }).toThrow();
-    });
     test("value of images array is not object data type", () => {
       expect(() => {
         // @ts-ignore
         imageValidation(["string input"], true);
+      }).toThrow();
+    });
+    test("pass second param not type of boolean", () => {
+      expect(() => {
+        // @ts-ignore
+        imageValidation(images, "string input");
       }).toThrow();
     });
   });
