@@ -1190,17 +1190,17 @@ describe("testing for function imageValidation: ", () => {
       }).toThrow();
     });
 
-    test("undefined and null for 2 params", () => {
-      expect(() => {
-        // @ts-ignore
-        imageValidation(undefined, null);
-      }).toThrow();
-    });
-
     test("null and undefined for 2 params", () => {
       expect(() => {
         // @ts-ignore
         imageValidation(null, undefined);
+      }).toThrow();
+    });
+
+    test("undefined and null for 2 params", () => {
+      expect(() => {
+        // @ts-ignore
+        imageValidation(undefined, null);
       }).toThrow();
     });
 
