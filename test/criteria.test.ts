@@ -1,5 +1,4 @@
 import { DensityPercentageProps } from "./../src/types";
-import { dynamicConditions } from "./../src/default-conditions";
 import {
   IMPROVE_SCORE,
   densityKeywordsValidate,
