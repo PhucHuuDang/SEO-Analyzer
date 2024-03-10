@@ -1,5 +1,4 @@
 import { DensityPercentageProps } from "./../src/types";
-import { dynamicConditions } from "./../src/default-conditions";
 import {
   IMPROVE_SCORE,
   densityKeywordsValidate,
@@ -1218,16 +1217,16 @@ describe("testing for function imageValidation: ", () => {
       }).toThrow();
     });
 
-    test("pass second param not type of boolean", () => {
-      expect(() => {
-        // @ts-ignore
-        imageValidation(images, "string input");
-      }).toThrow();
-    });
     test("value of images array is not object data type", () => {
       expect(() => {
         // @ts-ignore
         imageValidation(["string input"], true);
+      }).toThrow();
+    });
+    test("pass second param not type of boolean update code yml ", () => {
+      expect(() => {
+        // @ts-ignore
+        imageValidation(images, "string input");
       }).toThrow();
     });
   });
