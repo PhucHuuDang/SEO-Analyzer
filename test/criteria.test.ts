@@ -1224,7 +1224,7 @@ describe("testing for function imageValidation: ", () => {
         imageValidation(["string input"], true);
       }).toThrow();
     });
-    test("pass second param not type of boolean", () => {
+    test("pass second param not type of boolean test to push ", () => {
       expect(() => {
         // @ts-ignore
         imageValidation(images, "string input");
