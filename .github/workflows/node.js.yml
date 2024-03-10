@@ -31,7 +31,6 @@ jobs:
 
   deploy_to_npm:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/head/UPDATE/CI' }}
     needs: [build_and_test]
     steps:
       - uses: actions/checkout@v3
