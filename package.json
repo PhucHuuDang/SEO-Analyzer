@@ -1,6 +1,6 @@
 {
   "name": "seo-analyzer-assessments",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "seo-analyzer-assessments is a tool to analyze the SEO of a website",
   "main": "/dist/index.js",
   "module": "/dist/index.mjs",
