@@ -31,6 +31,7 @@ jobs:
 
   deploy_to_npm:
     runs-on: ubuntu-latest
+    name: run test
     needs: [build_and_test]
     steps:
       - name: Checkout code
