@@ -1224,7 +1224,7 @@ describe("testing for function imageValidation: ", () => {
         imageValidation(images, "string input");
       }).toThrow();
     });
-    test("value of images array is not object data type welcome", () => {
+    test("value of images array is not object data type ", () => {
       expect(() => {
         // @ts-ignore
         imageValidation(["string input"], true);
