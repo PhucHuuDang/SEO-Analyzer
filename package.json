@@ -1,6 +1,6 @@
 {
   "name": "seo-analyzer-assessments",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "seo-analyzer-assessments is a tool to analyze the SEO of a website",
   "main": "/dist/index.js",
   "module": "/dist/index.mjs",
@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsup",
     "git": "git-cz",
+    "release": "standard-version",
     "test": "jest --coverage",
     "semantic-release": "semantic-release --branches UPDATE/CI"
   },
@@ -31,6 +32,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "jest": "^29.7.0",
     "semantic-release": "^17.4.2",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
