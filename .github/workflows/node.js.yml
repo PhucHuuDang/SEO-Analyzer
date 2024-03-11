@@ -47,8 +47,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: increase version
-        run: npm version patch --no-git-tag-version
+      # - name: increase version
+      #   run: npm version patch --no-git-tag-version
       - name: Set Git user name and email
         run: |
           git config --global user.email "danghuuphuc001@gmail.com"
